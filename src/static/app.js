@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const activityInput = document.getElementById("activity");
   const closeRegistrationModal = document.querySelector(".close-modal");
+  const announcementBanner = document.getElementById("announcement-banner");
+  const announcementClose = document.getElementById("announcement-close");
 
   // Search and filter elements
   const searchInput = document.getElementById("activity-search");
@@ -245,6 +247,28 @@ document.addEventListener("DOMContentLoaded", () => {
       closeLoginModalHandler();
     }
   });
+
+  // Announcement banner: respect dismissed state and provide close behavior
+  if (announcementBanner) {
+    try {
+      if (localStorage.getItem("announcementDismissed") === "1") {
+        announcementBanner.classList.add("hidden");
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+
+    if (announcementClose) {
+      announcementClose.addEventListener("click", () => {
+        announcementBanner.classList.add("hidden");
+        try {
+          localStorage.setItem("announcementDismissed", "1");
+        } catch (e) {
+          // ignore storage errors
+        }
+      });
+    }
+  }
 
   // Handle login form submission
   loginForm.addEventListener("submit", async (event) => {
